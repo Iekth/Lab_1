@@ -7,7 +7,7 @@ int main()
 	setlocale(0, "Russian");
 
 	int year, p1, p2, p3, p4, p5, date;
-	printf("Введ0ите год: ");
+	printf("Г‚ГўГҐГ¤0ГЁГІГҐ ГЈГ®Г¤: ");
 	scanf_s("%d", &year);
 	printf("%d", year);
 	p1 = year / 400 - 1994 / 400;
@@ -22,6 +22,6 @@ int main()
 		p5 = 2 - p4;
 
 
-	printf(" День учителя в %dг. будет %d октября.", year, p5);
+	printf(" Г„ГҐГ­Гј ГіГ·ГЁГІГҐГ«Гї Гў %dГЈ. ГЎГіГ¤ГҐГІ %d Г®ГЄГІГїГЎГ°Гї.", year, p5);
 	return 0;
 }
