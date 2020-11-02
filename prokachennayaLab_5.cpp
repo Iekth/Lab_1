@@ -1,4 +1,4 @@
-#define _CRT_SECURE_NO_WARNINGS
+
 #include <stdio.h>
 #include <clocale>
 
@@ -8,12 +8,12 @@ int main(void) {
 	setlocale(LC_ALL, "Russian");
 
 	int j, i, num[2][3], sum = 0;
-	/* загрузка чисел */
+	/* Г§Г ГЈГ°ГіГ§ГЄГ  Г·ГЁГ±ГҐГ« */
 	for (i = 0; i < 2; ++i)
 		for (j = 0; j < 3; ++j)
 			num[i][j] = (i * 3) + j + 1;
 
-	/* вывод чисел */
+	/* ГўГ»ГўГ®Г¤ Г·ГЁГ±ГҐГ« */
 	
 	for (i = 0; i < 2; ++i)
 	{
@@ -26,7 +26,7 @@ int main(void) {
 
 			if (num[i][j] % 2 != 0 && i % 2 == 0 && j % 2 == 0)
 				sum += num[i][j];
-	printf("Сумма  равна: ");
+	printf("Г‘ГіГ¬Г¬Г   Г°Г ГўГ­Г : ");
 	printf("%d\n", sum);
 	}
 	
