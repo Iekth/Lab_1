@@ -1,179 +1,144 @@
-#include<stdio.h>
-#include<malloc.h>
-#include<ctype.h>
-#include<locale.h>
-//по-хорошему бы еще глобальные перенести в локальные...
-int num = 0; //Индекс элемента в массиве words
-int len = 0;
-char* words; //Массив символов(содержит найденные симметричные слова) 
-//int bb;
-int yy;
+#include <stdio.h>
+#include <stdlib.h>
+#include <locale.h>
+
+char* words; //РњР°СЃСЃРёРІ СЃРёРјРІРѕР»РѕРІ(СЃРѕРґРµСЂР¶РёС‚ РЅР°Р№РґРµРЅРЅС‹Рµ СЃРёРјРјРµС‚СЂРёС‡РЅС‹Рµ СЃР»РѕРІР°)
+char** sentences;
+int num = 0; //РРЅРґРµРєСЃ СЌР»РµРјРµРЅС‚Р° РІ РјР°СЃСЃРёРІРµ words
+int len = 0; //Р”Р»РёРЅР° РјР°СЃСЃРёРІР° words (45 - СЃР°РјРѕРµ Р±РѕР»СЊС€РѕРµ СЃР»РѕРІРѕ РІ Р°РЅРіР»РёР№СЃРєРѕРј Р°Р»С„Р°РІРёС‚Рµ, РЅРѕ СЌС‚Рѕ РЅРµ С‚РѕС‡РЅРѕ..
+int* sizeOfsentence;
+int status = 1; //РЎС‚Р°С‚СѓСЃ СЃРёРјРјРµС‚СЂРёРё
+int sizeOfword = 0; //РљРѕР»-РІРѕ Р±СѓРєРІ РІ СЃР»РѕРІРµ
+int countOfsentences = 0; //РљРѕР»-РІРѕ РїСЂРµРґР»РѕР¶РµРЅРёР№
+int countOfwords = 0; //РљРѕР»-РІРѕ СЃРёРјРјРµС‚СЂРёС‡РЅС‹С… СЃР»РѕРІ
+// РўРµРєСЃС‚ РґР»СЏ РѕС‚Р»Р°РґРєРё С‚РµРЅРµС‚ РѕРІС‹С„ РІС‹Р° С‹РІР°Р»Р¶ С‹Р°СЂ sefsdkj fdjlksjdf ds d 2323 9ir023r0 fj9fJH 0E0(EFJ)(ef0E*)F(^F*&DT FG D*S&FDS&*D 3333 #$$# Р”РµРґ Рђ Р‘ Р’ Р›РћР› fgd df
+// uyguY VBGEDF*y O*VDB FYTS* VDBFYHN SDYFSU*YOL*DYFTS^&$^W*TW GHF*SDFG S*DF GTSD*F РЁР РџР’Р«Р“ РРџР«Р’*(РџРђ ?РІС‹Рї 8Р°С‹РїРІ С‚РµРЅРµС‚ РќР•Рў РўР•РќР•Рў РќР•Р•Рќ СЂРЁРђР  Р«Р«РЁР¤Р  ?* Рќ*?Р Р¦Рђ*?Рђ*
+
+int isAlpha(unsigned char);
 void addLetter(char);
+void shutDown();
+
 int main() {
-	setlocale(0, "Russian");
-	int g, z, r, kol = 0, kol1 = 0, po = 0, status = 0, end1, vv, cc, bb, er;
-	int w, n1, i, j, k, n, m;
-	char** str, * xx;
-	printf("Vvedite kol-vo matric:\n");
-	scanf_s("%d", &n1);
-	fflush(stdin);
-	printf("Vvedite kol-vo strok v matrice:\n");
-	scanf_s("%d", &n);
-	fflush(stdin);
-	printf("Vvedite kol-vo stolbcov v matrice:\n");
-	scanf_s("%d", &m);
-	fflush(stdin);
-	printf("Vvedite razmer stroki:\n");
-	scanf_s("%d", &k);
-	fflush(stdin);
-	k += 2;
-	yy = k;
-	getchar();
-	fflush(stdin);
-	for (w = 1; w <= n1; w++) {//для движения по матрицам
-		str = (char**)malloc(n * sizeof(char*));//для создания двумерной динамической матрицы
-		if (!(str = (char**)malloc(n * sizeof(char*))))
-			return 0;
-		g = w;
-		printf("Vvod %d matrici:\n", w);
-		for (i = 0; i < n; i++) {
-			str[i] = (char*)malloc(m * sizeof(char));
-			if (!(str[i] = (char*)malloc(m * sizeof(char)))) {
-				free(str[i]);
-				free(str);
-				return 0;
-			}
-			for (j = 0; j < m; j++) {
-				xx = &str[i][j];//присваиваю указателю адрес элемента(и так много раз)
-				xx = (char*)malloc(k * sizeof(char));//делаю динамический массив по этому указателю
-				if (!(xx = (char*)malloc(k * sizeof(char)))) {
-					free(xx);
-					return 0;
+	system("chcp 1251");
+	setlocale(LC_ALL, "RU");
+	words = (char*)calloc(len, sizeof(char));
+	if (!words) printf("shit1");
+
+	printf("Р’РІРµРґРёС‚Рµ РєРѕР»РёС‡РµСЃС‚РІРѕ РїСЂРµРґР»РѕР¶РµРЅРёР№ :");
+	scanf_s("%d", &countOfsentences);
+	rewind(stdin);
+	sizeOfsentence = (int*)calloc(countOfsentences, sizeof(int));
+	if (!words) printf("shit2");
+	sentences = (char**)calloc(countOfsentences, sizeof(char*));
+	if (!words) printf("shit3");
+
+	for (int s = 0; s < countOfsentences; ++s) {
+		printf("Р’РІРµРґРёС‚Рµ СЂР°Р·РјРµСЂ РїСЂРµРґР»РѕР¶РµРЅРёР№ %d:", s + 1);
+		scanf_s("%d", &sizeOfsentence[s]);
+		rewind(stdin);
+
+		sentences[s] = (char*)calloc(++sizeOfsentence[s], sizeof(char));
+		printf("Р’РІРµРґРёС‚Рµ РїСЂРµРґР»РѕР¶РµРЅРёРµ:");
+		fgets(sentences[s], sizeOfsentence[s], stdin);
+		rewind(stdin);
+
+		for (int z = 0; z < sizeOfsentence[s]; ++z) {
+			sizeOfword = 0;
+			status = 1; //РЎР±СЂРѕСЃ Р·РЅР°С‡РµРЅРёР№ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
+
+			if (isAlpha(sentences[s][z])) { //Р•СЃР»Рё Р±СѓРєРІР°, С‚Рѕ СЃС‡РёС‚Р°РµРј СЂР°Р·РјРµСЂ СЃР»РѕРІР°
+				if (z == 0) { //РЎС‚СЂР°С€РЅС‹Рµ РїСЂРѕРІРµСЂРєРё
+					for (int i = z; i < sizeOfsentence[s]; ++i) {
+						if (!isAlpha(sentences[s][i])) break;
+						sizeOfword++;
+					}
+					if (sizeOfword <= sizeOfsentence[s] - 2) {
+						if (sentences[s][z + sizeOfword] != ' ') {
+							continue;
+						}
+					}
 				}
-				//getchar();
-				fgets(xx, k, stdin);//ввожу строку для этого элемента матрицы(указателя)
-				//getchar();
-				fflush(stdin);
-				z = 0;
-				while (xx[z] != '\0' && xx[z] != '\n') {
-					if (xx[z] == ' ') {//если пробел-избавляюсь от пробелов до буквы
-						while (xx[z] == ' ') {
-							kol1++;
-							z++;
-							if (xx[z] == '\0')
-								break;
+				else {
+					if (sentences[s][z - 1] == ' ') {
+						for (int i = z; i < sizeOfsentence[s]; ++i) {
+							if (!isAlpha(sentences[s][i])) break;
+							sizeOfword++;
 						}
 					}
-					if (xx[z] != ' ' && xx[z] != '\0' && xx[z] != '\n') {//нашел букву-поехали считать сколько их в слове
-						r = z;
-						bb = r;
-						er = bb;
-						while (xx[z] != ' ' && xx[z] != '\0' && xx[z] != '\n') {//сколько букв??
-							kol++;
-							z++;
+					if (sentences[s][z - 1] == ' ' && sentences[s][z + sizeOfword] != ' ') {
+						if (sentences[s][z + sizeOfword] != '\n' && (z + sizeOfword < sizeOfsentence[s] - 1)) {
+							continue;
 						}
-
-						if (kol > 2) {//интересуюсь словами большими чем 3 буквы
-
-							if (kol > 2 && kol % 2 == 0) {//условие для слов с четеным количеством букв
-								end1 = r + kol - 1;//конец слова
-								while (status == 0) {
-									if (xx[r] != xx[end1]) {
-										kol = 0;
-										break;
-									}
-									if (xx[r] == xx[end1]) {//проверка соотвествующих букв 
-										r++;//сдвигаю с левого края слова
-										end1--;//сдвиг с правого края слова
-										if (r + 1 == end1 && xx[r] == xx[end1]) {//если по индексу и по значению уже граница и значения равны-подтверждение нужного слова
-											if (status == 0) { //Копируем слово циклом в другой массив(words) и выводим его 
-												for (bb; bb <= er + kol - 1; bb++) {
-													addLetter(xx[bb]);
-
-												}
-												addLetter(' '); //Добавляем пробел в массив words для читаемости 
-											}
-											po++;
-											status = 0;
-											kol = 0;
-											break;
-										}
-									}
-								}
-							}
-
-
-							if (kol > 2 && kol % 2 != 0) {//для нечетных слов
-								end1 = r + kol - 1;
-								vv = kol / 2;//нахожу середину слова (с округлением)
-								cc = r;
-								while (status == 0) {
-									if (xx[r] != xx[end1]) {
-										kol = 0;
-										break;
-									}
-									if (xx[r] == xx[end1]) {
-										if (kol == 3) {
-											if (status == 0) { //Копируем слово циклом в другой массив(words) и выводим его 
-												for (bb; bb <= er + kol - 1; bb++) {
-													addLetter(xx[bb]);
-												}
-												addLetter(' '); //Добавляем пробел в массив words для читаемости 
-											}
-											kol = 0;
-											po++;
-											break;
-										}
-										r++;
-										end1--;
-										if (r + 1 == cc + vv && xx[r] == xx[end1]) {//провека по индексу приблизились к середине слова плюс равность индексов(например 3 и 5)
-											if (status == 0) { //Копируем слово циклом в другой массив(words) и выводим его 
-												for (bb; bb <= er + kol - 1; bb++) {
-													addLetter(xx[bb]);
-												}
-												addLetter(' '); //Добавляем пробел в массив words для читаемости 
-											}
-											po++;
-											status = 0;
-											kol = 0;
-											break;
-										}
-									}
-								}
-							}
-							kol = 0;
-						}
-						kol = 0;
 					}
+				}
+			}
+			if (sizeOfword > 0) {
+				int j = z + sizeOfword - 1; //РџРѕСЃР»РµРґРЅСЏСЏ Р±СѓРєРІР° РІ СЃР»РѕРІРµ
+				for (int i = z; i < z + sizeOfword; ++i) { //РџСЂРѕРІРµСЂРєР° РЅР° СЃРёРјРјРµС‚СЂРёС‡РЅРѕСЃС‚СЊ
+					if (sentences[s][i] != sentences[s][j] && (int)sentences[s][i] + 32 != (int)sentences[s][j] && (int)sentences[s][i] != (int)sentences[s][j] + 32) { //РџСЂРѕРІРµСЂРєР° РґР»СЏ Р·Р°РіР»Р°РІРЅС‹С…
+						status = 0;
+						break;
+					}
+					j--;
+				}
+				z += sizeOfword; //Р“Р»Р°РІРЅС‹Р№ С†РёРєР»(РёРґС‘С‚ РїРѕ РїСЂРµРґР»РѕР¶РµРЅРёСЋ) РїСЂРѕРїСѓСЃРєР°РµС‚ РїСЂРѕРІРµСЂРµРЅРЅРѕРµ СЃР»РѕРІРѕ
+
+				if (status) { //РљРѕРїРёСЂСѓРµРј СЃР»РѕРІРѕ С†РёРєР»РѕРј РІ РґСЂСѓРіРѕР№ РјР°СЃСЃРёРІ(words) Рё РІС‹РІРѕРґРёРј РµРіРѕ
+					printf("( ");
+					for (int i = z - sizeOfword; i < z; ++i) {
+						addLetter(sentences[s][i]);
+						printf("%c", sentences[s][i]);
+					}
+					addLetter(' '); //Р”РѕР±Р°РІР»СЏРµРј РїСЂРѕР±РµР» РІ РјР°СЃСЃРёРІ words РґР»СЏ С‡РёС‚Р°РµРјРѕСЃС‚Рё
+					countOfwords++; //Р”РѕР±Р°РІР»СЏРµРј +1 Рє РєРѕР»-РІСѓ СЃРёРјРјРµС‚СЂРёС‡РЅС‹С… СЃР»РѕРІ
+					printf(" ) - РЎР»РѕРІРѕ СЃРёРјРјРµС‚СЂРёС‡РЅРѕ\n");
+				}
+				else {
+					printf("РЎР»РѕРІРѕ РЅРµ СЃРёРјРјРµС‚СЂРёС‡РЅРѕ\n");
 				}
 			}
 		}
 	}
-	//printf("po==%d",po); для кол-ва таких слов
-	printf("\nВаша договоренность- \n ");
-	for (int t = 0; t < len; ++t) {
-		printf("%c", words[t]);
+
+	printf("\nРњР°СЃСЃРёРІ СЃРёРјРјРµС‚СЂРёС‡РЅС‹С… СЃР»РѕРІ РІРѕ РІСЃРµС… РїСЂРµРґР»РѕР¶РµРЅРёСЏС… - ( ");
+	for (int i = 0; i < len; ++i) {
+		printf("%c", words[i]);
 	}
+	
+
+	shutDown();
 	return 0;
 }
-void addLetter(char sym) { //Функция для добавления символа в массив words 
-	words = (char*)realloc(words, ++len * sizeof(char));//len всегда увеличивается на 1 так как добавляю по 1 букве с цикла в int main
-	if (!words) {
-		free(words);
-		return ;
-	}
 
-	char* tmp = (char*)realloc(words, ++len * sizeof(char));
+int isAlpha(unsigned char sym) { //Р¤СѓРЅРєС†РёСЏ РґР»СЏ РїСЂРѕРІРµСЂРєРё РЅР° СЂСѓСЃСЃРєРёРµ Рё Р°РЅРіР»РёР№СЃРєРёРµ Р±СѓРєРІС‹
+	if (((int)sym >= 65 && (int)sym <= 90) || ((int)sym >= 97 && (int)sym <= 122)) return 1;
+	if (((int)sym >= 192 && (int)sym <= 255)) return 1;
+	return 0;
+}
+
+void addLetter(char sym) { //Р¤СѓРЅРєС†РёСЏ РґР»СЏ РґРѕР±Р°РІР»РµРЅРёСЏ
+
+	
+		//words = (char *)realloc(words, ++len * sizeof(char));
+		char* tmp = (char*)realloc(words, ++len * sizeof(char));
 	if (tmp) {
-		words = tmp; //Увеличиваем размер массива words
-		free(tmp);
+		words = tmp; //РЈРІРµР»РёС‡РёРІР°РµРј СЂР°Р·РјРµСЂ РјР°СЃСЃРёРІР° words
+		//free(tmp); Р’СЂРѕРґРµ РєР°Рє СѓРЅРёС‡С‚РѕР¶Р°РµС‚СЃСЏ, РЅРѕ .. РµРіРѕ Р·РЅР°РµС‚
 	}
 	else {
 		printf("Realloc error");
 		free(tmp);
-
+		shutDown();
 	}
 	words[num] = sym;
 	num++;
+}
 
+void shutDown() { //РћСЃРІРѕР±РѕР¶РґРµРЅРёРµ РїР°РјСЏС‚Рё (РІС‹РЅРµСЃРµРЅРѕ РІ С„СѓРЅРєС†РёСЋ РґР»СЏ СЌРєСЃС‚СЂРµРЅРЅРѕРіРѕ Р·Р°РІРµСЂС€РµРЅРёСЏ РїСЂРѕРіСЂР°РјРјС‹ РІ СЃР»СѓС‡Р°Рµ РѕС€РёР±РѕРє РІС‹РґРµР»РµРЅРёСЏ РїР°РјСЏС‚Рё)
+	free(words);
+	free(sizeOfsentence);
+	for (int i = 0; i < countOfsentences; ++i) {
+		free(sentences[i]);
+	}
+	free(sentences);
 }
