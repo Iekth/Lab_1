@@ -2,143 +2,78 @@
 #include <stdlib.h>
 #include <locale.h>
 
-char* words; //Массив символов(содержит найденные симметричные слова)
-char** sentences;
-int num = 0; //Индекс элемента в массиве words
-int len = 0; //Длина массива words (45 - самое большое слово в английском алфавите, но это не точно..
-int* sizeOfsentence;
-int status = 1; //Статус симметрии
-int sizeOfword = 0; //Кол-во букв в слове
-int countOfsentences = 0; //Кол-во предложений
-int countOfwords = 0; //Кол-во симметричных слов
-// Текст для отладки тенет овыф выа ывалж ыар sefsdkj fdjlksjdf ds d 2323 9ir023r0 fj9fJH 0E0(EFJ)(ef0E*)F(^F*&DT FG D*S&FDS&*D 3333 #$$# Дед А Б В ЛОЛ fgd df
-// uyguY VBGEDF*y O*VDB FYTS* VDBFYHN SDYFSU*YOL*DYFTS^&$^W*TW GHF*SDFG S*DF GTSD*F ШРПВЫГ ИПЫВ*(ПА ?вып 8аыпв тенет НЕТ ТЕНЕТ НЕЕН рШАР ЫЫШФР ?* Н*?РЦА*?А*
-
-int isAlpha(unsigned char);
-void addLetter(char);
-void shutDown();
-
+void osn(char*, int);
 int main() {
-	system("chcp 1251");
-	setlocale(LC_ALL, "RU");
-	words = (char*)calloc(len, sizeof(char));
-	if (!words) printf("shit1");
+setlocale(LC_ALL, "RUS");
+char ****str;
+int n1, n, m, dl, i, j,k,i1,i2;
+printf_s("Введите кол-во матриц:\nn1 = ");
+scanf_s("%d", &n1);
+printf_s("Введите кол-во строк матриц:\nn = ");
+scanf_s("%d", &n);
+printf_s("Введите кол-во столбцов матриц:\nm = ");
+scanf_s("%d", &m);
+printf_s("Введите кол-во символов в строках, строки - каждый элемент матрицы:\ndl = ");
+scanf_s("%d", &dl);
+str = (char****)malloc(sizeof(char**) * n1);
+for (i = 0; i < n1; i++)
+*(str + i) = (char***)malloc(sizeof(char) * n);
+for (i = 0; i < n1; i++)
+for (j = 0; j < n; j++)
+*(*(str + i) + j) = (char**)malloc(sizeof(char) * m);
+for (i = 0; i < n1; i++)
+for (j = 0; j < n; j++)
+for (k = 0; k < m; k++)
+*(*(*(str + i) + j) + k) = (char*)malloc(sizeof(char) * dl);
+if (str == nullptr) printf_s("No memory");
+printf_s("Вводите вашу строку:\n");
+rewind(stdin);
+for (i = 0; i < n1; i++)
+for (j = 0; j < n; j++)
+for (k = 0; k < m; k++)
+fgets(*(*(*(str + i) + j) + k), dl, stdin);
+for (i = 0; i < n1; i++)
+for (j = 0; j < n; j++)
+for (k = 0; k < m; k++)
+for (int a = 0; a < dl; a++)
+if (*(*(*(*(str + i) + j) + k) + a) == '\n') *(*(*(*(str + i) + j) + k) + a) = '\0';
+printf_s("\nСлова, которые читаются справа и слева одинаково:\n");
+for (i = 0; i < n1 && *(*(*(*(str + i)))) != '\0'; i++)
+for (j = 0; j < n && *(*(*(*(str + i) + j))) != '\0'; j++)
+for (k = 0; k < m && *(*(*(*(str + i) + j) + k)) != '\0'; k++)
+for (int a = 0; a < dl && *(*(*(*(str + i) + j) + k) + a) != '\0';) {
+if (*(*(*(*(str + i) + j) + k) + a) == ' ') while (*(*(*(*(str + i) + j) + k) + a) == ' ' && *(*(*(*(str + i) + j) + k) + a) != '\0') a++;
+i1 = a;
+for (i2 = 0; *(*(*(*(str + i) + j) + k) + a) != ' ' && *(*(*(*(str + i) + j) + k) + a) != '\0'; i2++, a++);
 
-	printf("Введите количество предложений :");
-	scanf_s("%d", &countOfsentences);
-	rewind(stdin);
-	sizeOfsentence = (int*)calloc(countOfsentences, sizeof(int));
-	if (!words) printf("shit2");
-	sentences = (char**)calloc(countOfsentences, sizeof(char*));
-	if (!words) printf("shit3");
-
-	for (int s = 0; s < countOfsentences; ++s) {
-		printf("Введите размер предложений %d:", s + 1);
-		scanf_s("%d", &sizeOfsentence[s]);
-		rewind(stdin);
-
-		sentences[s] = (char*)calloc(++sizeOfsentence[s], sizeof(char));
-		printf("Введите предложение:");
-		fgets(sentences[s], sizeOfsentence[s], stdin);
-		rewind(stdin);
-
-		for (int z = 0; z < sizeOfsentence[s]; ++z) {
-			sizeOfword = 0;
-			status = 1; //Сброс значений по умолчанию
-
-			if (isAlpha(sentences[s][z])) { //Если буква, то считаем размер слова
-				if (z == 0) { //Страшные проверки
-					for (int i = z; i < sizeOfsentence[s]; ++i) {
-						if (!isAlpha(sentences[s][i])) break;
-						sizeOfword++;
-					}
-					if (sizeOfword <= sizeOfsentence[s] - 2) {
-						if (sentences[s][z + sizeOfword] != ' ') {
-							continue;
-						}
-					}
-				}
-				else {
-					if (sentences[s][z - 1] == ' ') {
-						for (int i = z; i < sizeOfsentence[s]; ++i) {
-							if (!isAlpha(sentences[s][i])) break;
-							sizeOfword++;
-						}
-					}
-					if (sentences[s][z - 1] == ' ' && sentences[s][z + sizeOfword] != ' ') {
-						if (sentences[s][z + sizeOfword] != '\n' && (z + sizeOfword < sizeOfsentence[s] - 1)) {
-							continue;
-						}
-					}
-				}
-			}
-			if (sizeOfword > 0) {
-				int j = z + sizeOfword - 1; //Последняя буква в слове
-				for (int i = z; i < z + sizeOfword; ++i) { //Проверка на симметричность
-					if (sentences[s][i] != sentences[s][j] && (int)sentences[s][i] + 32 != (int)sentences[s][j] && (int)sentences[s][i] != (int)sentences[s][j] + 32) { //Проверка для заглавных
-						status = 0;
-						break;
-					}
-					j--;
-				}
-				z += sizeOfword; //Главный цикл(идёт по предложению) пропускает проверенное слово
-
-				if (status) { //Копируем слово циклом в другой массив(words) и выводим его
-					printf("( ");
-					for (int i = z - sizeOfword; i < z; ++i) {
-						addLetter(sentences[s][i]);
-						printf("%c", sentences[s][i]);
-					}
-					addLetter(' '); //Добавляем пробел в массив words для читаемости
-					countOfwords++; //Добавляем +1 к кол-ву симметричных слов
-					printf(" ) - Слово симметрично\n");
-				}
-				else {
-					printf("Слово не симметрично\n");
-				}
-			}
-		}
-	}
-
-	printf("\nМассив симметричных слов во всех предложениях - ( ");
-	for (int i = 0; i < len; ++i) {
-		printf("%c", words[i]);
-	}
-	
-
-	shutDown();
-	return 0;
+char* str2;
+str2 = (char*) malloc(sizeof(char) * (i2 + 1));
+for (int b = 0; b < i2 + 1; b++, i1++) {
+*(str2 + b) = *(*(*(*(str + i) + j) + k) + i1);
+if (b == i2) *(str2 + b) = '\0';
+}
+osn(str2, i2);
+free(str2);
 }
 
-int isAlpha(unsigned char sym) { //Функция для проверки на русские и английские буквы
-	if (((int)sym >= 65 && (int)sym <= 90) || ((int)sym >= 97 && (int)sym <= 122)) return 1;
-	if (((int)sym >= 192 && (int)sym <= 255)) return 1;
-	return 0;
+
+free(str);
 }
 
-void addLetter(char sym) { //Функция для добавления
-
-	
-		//words = (char *)realloc(words, ++len * sizeof(char));
-		char* tmp = (char*)realloc(words, ++len * sizeof(char));
-	if (tmp) {
-		words = tmp; //Увеличиваем размер массива words
-		//free(tmp); Вроде как уничтожается, но .. его знает
-	}
-	else {
-		printf("Realloc error");
-		free(tmp);
-		shutDown();
-	}
-	words[num] = sym;
-	num++;
+void osn(char* str2, int raz) {
+int i,k = 0, j;
+j=raz-1;
+for (i = 0; i <= j; i++) {
+if (*(str2 + i) == *(str2 + j)) k++;
+else {
+k = 0;
+break;
 }
-
-void shutDown() { //Освобождение памяти (вынесено в функцию для экстренного завершения программы в случае ошибок выделения памяти)
-	free(words);
-	free(sizeOfsentence);
-	for (int i = 0; i < countOfsentences; ++i) {
-		free(sentences[i]);
-	}
-	free(sentences);
+j--;
+}
+if (k != 0) {
+for (i = 0; i < raz; i++)
+printf_s("%c", *(str2 + i));
+printf_s(" ");
+}
 }
